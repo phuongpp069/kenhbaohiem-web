@@ -58,9 +58,9 @@ export default function Header() {
             <p className="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Hotline 24/7</p>
             <p className="text-brand-primary-light font-bold leading-tight">0912 660 869</p>
           </div>
-          <Button asChild className="bg-brand-accent text-white px-5 py-2 rounded font-semibold text-sm hover:bg-brand-accent-hover transition-colors shadow-sm">
-            <Link to="/lien-he">Nhận tư vấn</Link>
-          </Button>
+          <Link to="/lien-he" className="inline-flex items-center justify-center h-10 px-4 py-2 bg-brand-accent text-white rounded-lg font-semibold text-sm hover:bg-brand-accent-hover transition-colors shadow-sm">
+            Nhận tư vấn
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -95,9 +95,9 @@ export default function Header() {
               <Phone className="h-4 w-4" />
               0912.660.869
             </a>
-            <Button asChild className="w-full">
-              <Link to="/lien-he">Nhận tư vấn</Link>
-            </Button>
+            <Link to="/lien-he" className="inline-flex w-full items-center justify-center h-10 px-4 py-2 rounded-lg bg-brand-accent text-white hover:bg-brand-accent-hover transition-colors text-sm font-medium">
+              Nhận tư vấn
+            </Link>
           </div>
         </div>
       )}

@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { GoogleGenAI } from "@google/genai";
 import { KBH_KNOWLEDGE } from "../knowledgeBase";
+
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,37 +36,23 @@ export default function ChatbotWidget() {
     setIsLoading(true);
 
     try {
-      const contents = updatedMessages.map((m) => ({
+      const knowledgeString = typeof KBH_KNOWLEDGE === 'string' ? KBH_KNOWLEDGE : JSON.stringify(KBH_KNOWLEDGE);
+
+      // Construct history without the system instruction 
+      const historyContents = updatedMessages.map((m) => ({
         role: m.role,
         parts: [{ text: m.text }],
       }));
 
-      const body = {
-        system_instruction: {
-          parts: {
-            text: "Bạn là trợ lý ảo tư vấn của Kênh Bảo Hiểm. Luôn trả lời ngắn gọn, lịch sự, chuyên nghiệp. Dưới đây là tài liệu nghiệp vụ của bạn: " + KBH_KNOWLEDGE + " Hãy dựa sát vào tài liệu này để trả lời. Nếu câu hỏi vượt quá tài liệu hoặc khách hỏi giá chi tiết, hãy khuyên khách gọi Hotline 0912.660.869 để chuyên viên hỗ trợ."
-          }
-        },
-        contents: contents
-      };
-
-      const apiKey = "AIzaSyBAlSGNFn3mpsbWdLFf6kKVeYmEXxZMFgM";
-      const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body)
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: historyContents,
+        config: {
+          systemInstruction: "Bạn là trợ lý ảo tư vấn chuyên nghiệp của Kênh Bảo Hiểm. Luôn trả lời lịch sự, chuyên nghiệp. Hãy dựa SÁT vào tài liệu nghiệp vụ sau để trả lời khách hàng một cách chính xác tuyệt đối: " + knowledgeString + " .Nếu câu hỏi vượt quá tài liệu, hãy khuyên khách gọi Hotline 0912.660.869 để chuyên viên hỗ trợ."
+        }
       });
 
-      if (!response.ok) {
-        throw new Error("Lỗi kết nối API: " + response.statusText);
-      }
-
-      const data = await response.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Xin lỗi, tôi không thể trả lời lúc này.";
+      const responseText = response.text || "Xin lỗi, tôi không thể trả lời lúc này.";
       
       setMessages((prev) => [...prev, { role: "model", text: responseText }]);
     } catch (error) {
