@@ -126,9 +126,9 @@ export default function Home() {
             </div>
           </div>
           <form className="grid grid-cols-2 gap-4 flex-1" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Họ và tên" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
-            <input type="tel" placeholder="Số điện thoại" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required/>
-            <select className="col-span-2 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.note} onChange={(e) => setFormData({ ...formData, note: e.target.value })}>
+            <input type="text" name="Họ tên" id="name" placeholder="Họ và tên" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+            <input type="tel" name="Số điện thoại" id="phone" placeholder="Số điện thoại" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required/>
+            <select name="Nhu cầu hoặc Lời nhắn" id="note" className="col-span-2 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.note} onChange={(e) => setFormData({ ...formData, note: e.target.value })}>
               <option value="Nhu cầu quan tâm" disabled>Nhu cầu quan tâm</option>
               <option value="Bảo hiểm Ô tô">Bảo hiểm Ô tô</option>
               <option value="Bảo hiểm Sức khỏe">Bảo hiểm Sức khỏe</option>

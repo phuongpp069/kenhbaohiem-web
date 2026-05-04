@@ -82,8 +82,8 @@ export default function ProductDetail() {
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24">
                     <h3 className="text-lg font-bold mb-4">Đăng ký mua / Nhận hướng dẫn</h3>
                     <form className="space-y-4" onSubmit={handleSubmit}>
-                        <input className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Họ và tên" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
-                        <input className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Số điện thoại" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+                        <input type="text" name="Họ tên" id="detail-name" className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Họ và tên" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                        <input type="tel" name="Số điện thoại" id="detail-phone" className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Số điện thoại" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
                         <Button className="w-full" disabled={isSubmitting}>{isSubmitting ? 'Đang gửi...' : 'Gửi thông tin'}</Button>
                     </form>
                     <div className="mt-4 pt-4 border-t text-sm text-center text-slate-500">

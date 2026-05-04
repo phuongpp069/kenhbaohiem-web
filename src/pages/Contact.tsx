@@ -80,15 +80,15 @@ export default function Contact() {
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium mb-1">Họ tên của bạn</label>
-              <input className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập họ tên" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+              <input type="text" name="Họ tên" id="contact-name" className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập họ tên" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Số điện thoại *</label>
-              <input className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập số điện thoại" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+              <input type="tel" name="Số điện thoại" id="contact-phone" className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập số điện thoại" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Nội dung yêu cầu</label>
-              <textarea rows={4} className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Bạn cần tư vấn sản phẩm nào?" value={formData.note} onChange={(e) => setFormData({ ...formData, note: e.target.value })}></textarea>
+              <textarea name="Nhu cầu hoặc Lời nhắn" id="contact-note" rows={4} className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Bạn cần tư vấn sản phẩm nào?" value={formData.note} onChange={(e) => setFormData({ ...formData, note: e.target.value })}></textarea>
             </div>
             <Button size="lg" disabled={isSubmitting} className="w-full mt-4">{isSubmitting ? 'Đang gửi...' : 'Gửi thông tin'}</Button>
           </form>
