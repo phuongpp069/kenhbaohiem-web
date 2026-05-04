@@ -15,7 +15,7 @@ export default function ProductDetail() {
       formParams.append('Số điện thoại', formData.phone);
       formParams.append('Nhu cầu hoặc Lời nhắn', 'Quan tâm: Gói Bảo hiểm Sức khỏe Gia đình Toàn diện');
 
-      await fetch('https://script.google.com/macros/s/AKfycbyvRdAmkdaWKUjVgkMKJueuYJ2A_dl9j2kmt11ijih9w7UNQxtGnZwaNX1YyChQMH-k/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbx9u1asXfNgMamUE6_CeGgK4Rt5ziXfrdwi3hnGKii4h3cveL-hc2N14m6Y5juDIbXO/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
