@@ -10,20 +10,32 @@ export default function ProductDetail() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
+      const formElement = e.target as HTMLFormElement;
+      const data = new FormData(formElement);
+      
+      const nameVal = (data.get('Họ tên') as string) || formData.name;
+      const phoneVal = (data.get('Số điện thoại') as string) || formData.phone;
+
       const formParams = new URLSearchParams();
-      formParams.append('Họ tên', formData.name);
-      formParams.append('Số điện thoại', formData.phone);
+      formParams.append('Họ tên', nameVal);
+      formParams.append('Số điện thoại', phoneVal);
       formParams.append('Nhu cầu hoặc Lời nhắn', 'Quan tâm: Gói Bảo hiểm Sức khỏe Gia đình Toàn diện');
 
-      await fetch('https://script.google.com/macros/s/AKfycbx9u1asXfNgMamUE6_CeGgK4Rt5ziXfrdwi3hnGKii4h3cveL-hc2N14m6Y5juDIbXO/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbx9u1asXfNgMamUE6_CeGgK4Rt5ziXfrdwi3hnGKii4h3cveL-hc2N14m6Y5juDIbXO/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: formParams.toString(),
       });
-      alert('Gửi thành công');
-      setFormData({ name: '', phone: '' });
+      
+      if (response.ok || response.type === 'opaque') {
+        alert('Gửi thành công');
+        setFormData({ name: '', phone: '' });
+        formElement.reset();
+      } else {
+        alert('Có lỗi xảy ra trong quá trình gửi, vui lòng thử lại.');
+      }
     } catch (error) {
       console.error(error);
       alert('Có lỗi xảy ra, vui lòng thử lại.');
