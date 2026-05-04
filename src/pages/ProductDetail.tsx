@@ -1,6 +1,6 @@
 import { Button } from "../components/ui/button";
 import { CheckCircle, Info, FileText } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function ProductDetail() {
   const [formData, setFormData] = useState({ name: '', phone: '' });
