@@ -18,6 +18,7 @@ export default function ProductDetail() {
 
       const formParams = new URLSearchParams();
       formParams.append('Họ tên', nameVal);
+      formParams.append('\nHọ tên', nameVal); // Dự phòng trường hợp cột B1 trong Google Sheet có dấu xuống dòng (Enter)
       formParams.append('Số điện thoại', phoneVal);
       formParams.append('Nhu cầu hoặc Lời nhắn', 'Quan tâm: Gói Bảo hiểm Sức khỏe Gia đình Toàn diện');
 
