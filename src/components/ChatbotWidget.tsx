@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { GoogleGenAI } from "@google/genai";
 import { KBH_KNOWLEDGE } from "../knowledgeBase";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: "user" | "model"; text: string }[]>([
@@ -43,6 +41,10 @@ export default function ChatbotWidget() {
         role: m.role,
         parts: [{ text: m.text }],
       }));
+
+      // Fallback to provided key if build env not set on custom domain
+      const apiKey = process.env.GEMINI_API_KEY || "AIzaSyBAlSGNFn3mpsbWdLFf6kKVeYmEXxZMFgM";
+      const ai = new GoogleGenAI({ apiKey });
 
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
