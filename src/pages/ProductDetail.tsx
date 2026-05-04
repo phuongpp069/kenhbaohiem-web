@@ -1,7 +1,37 @@
 import { Button } from "../components/ui/button";
 import { CheckCircle, Info, FileText } from "lucide-react";
+import { useState } from "react";
 
 export default function ProductDetail() {
+  const [formData, setFormData] = useState({ name: '', phone: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const formParams = new URLSearchParams();
+      formParams.append('Họ tên', formData.name);
+      formParams.append('Số điện thoại', formData.phone);
+      formParams.append('Nhu cầu hoặc Lời nhắn', 'Quan tâm: Gói Bảo hiểm Sức khỏe Gia đình Toàn diện');
+
+      await fetch('https://script.google.com/macros/s/AKfycbyvRdAmkdaWKUjVgkMKJueuYJ2A_dl9j2kmt11ijih9w7UNQxtGnZwaNX1YyChQMH-k/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formParams.toString(),
+      });
+      alert('Gửi thành công');
+      setFormData({ name: '', phone: '' });
+    } catch (error) {
+      console.error(error);
+      alert('Có lỗi xảy ra, vui lòng thử lại.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-brand-light">
       {/* Hero */}
@@ -51,10 +81,10 @@ export default function ProductDetail() {
             <div className="md:col-span-1">
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24">
                     <h3 className="text-lg font-bold mb-4">Đăng ký mua / Nhận hướng dẫn</h3>
-                    <form className="space-y-4">
-                        <input className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Họ và tên" />
-                        <input className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Số điện thoại" />
-                        <Button className="w-full">Gửi thông tin</Button>
+                    <form className="space-y-4" onSubmit={handleSubmit}>
+                        <input className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Họ và tên" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+                        <input className="w-full border p-3 rounded-lg bg-slate-50" placeholder="Số điện thoại" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
+                        <Button className="w-full" disabled={isSubmitting}>{isSubmitting ? 'Đang gửi...' : 'Gửi thông tin'}</Button>
                     </form>
                     <div className="mt-4 pt-4 border-t text-sm text-center text-slate-500">
                         Hoặc gọi <a href="tel:0912660869" className="font-bold text-brand-primary">0912.660.869</a>

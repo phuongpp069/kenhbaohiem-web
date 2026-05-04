@@ -1,7 +1,37 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { useState } from "react";
 
 export default function Contact() {
+  const [formData, setFormData] = useState({ name: '', phone: '', note: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const formParams = new URLSearchParams();
+      formParams.append('Họ tên', formData.name);
+      formParams.append('Số điện thoại', formData.phone);
+      formParams.append('Nhu cầu hoặc Lời nhắn', formData.note);
+
+      await fetch('https://script.google.com/macros/s/AKfycbyvRdAmkdaWKUjVgkMKJueuYJ2A_dl9j2kmt11ijih9w7UNQxtGnZwaNX1YyChQMH-k/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formParams.toString(),
+      });
+      alert('Gửi thành công');
+      setFormData({ name: '', phone: '', note: '' });
+    } catch (error) {
+      console.error(error);
+      alert('Có lỗi xảy ra, vui lòng thử lại.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="py-16 max-w-6xl mx-auto px-4">
       <div className="text-center mb-12">
@@ -47,20 +77,20 @@ export default function Contact() {
 
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
           <h2 className="text-2xl font-bold mb-6 text-brand-dark">Gửi lời nhắn cho KBH</h2>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium mb-1">Họ tên của bạn</label>
-              <input className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập họ tên" />
+              <input className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập họ tên" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Số điện thoại *</label>
-              <input className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập số điện thoại" required />
+              <input className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Nhập số điện thoại" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Nội dung yêu cầu</label>
-              <textarea rows={4} className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Bạn cần tư vấn sản phẩm nào?"></textarea>
+              <textarea rows={4} className="w-full border rounded-lg p-3 bg-slate-50" placeholder="Bạn cần tư vấn sản phẩm nào?" value={formData.note} onChange={(e) => setFormData({ ...formData, note: e.target.value })}></textarea>
             </div>
-            <Button size="lg" className="w-full mt-4">Gửi thông tin</Button>
+            <Button size="lg" disabled={isSubmitting} className="w-full mt-4">{isSubmitting ? 'Đang gửi...' : 'Gửi thông tin'}</Button>
           </form>
         </div>
       </div>

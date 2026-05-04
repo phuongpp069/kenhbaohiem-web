@@ -1,8 +1,38 @@
 import { Shield, Car, Heart, Plane, Search, CheckCircle, FileText, ArrowRight, ArrowDownRight, Phone } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function Home() {
+  const [formData, setFormData] = useState({ name: '', phone: '', note: 'Nhu cầu quan tâm' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const formParams = new URLSearchParams();
+      formParams.append('Họ tên', formData.name);
+      formParams.append('Số điện thoại', formData.phone);
+      formParams.append('Nhu cầu hoặc Lời nhắn', formData.note);
+
+      await fetch('https://script.google.com/macros/s/AKfycbyvRdAmkdaWKUjVgkMKJueuYJ2A_dl9j2kmt11ijih9w7UNQxtGnZwaNX1YyChQMH-k/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formParams.toString(),
+      });
+      alert('Gửi thành công');
+      setFormData({ name: '', phone: '', note: 'Nhu cầu quan tâm' });
+    } catch (error) {
+      console.error(error);
+      alert('Có lỗi xảy ra, vui lòng thử lại.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-brand-light">
       <main className="flex-1 p-4 md:p-6 grid grid-cols-12 gap-4 max-w-7xl mx-auto align-middle pb-20">
@@ -95,17 +125,17 @@ export default function Home() {
               <div className="w-8 h-8 rounded-full bg-teal-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-teal-700">K</div>
             </div>
           </div>
-          <form className="grid grid-cols-2 gap-4 flex-1">
-            <input type="text" placeholder="Họ và tên" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" />
-            <input type="tel" placeholder="Số điện thoại" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" required/>
-            <select className="col-span-2 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20">
-              <option>Nhu cầu quan tâm</option>
-              <option>Bảo hiểm Ô tô</option>
-              <option>Bảo hiểm Sức khỏe</option>
-              <option>Bảo hiểm Xe máy</option>
+          <form className="grid grid-cols-2 gap-4 flex-1" onSubmit={handleSubmit}>
+            <input type="text" placeholder="Họ và tên" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+            <input type="tel" placeholder="Số điện thoại" className="col-span-2 sm:col-span-1 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} required/>
+            <select className="col-span-2 px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20" value={formData.note} onChange={(e) => setFormData({ ...formData, note: e.target.value })}>
+              <option value="Nhu cầu quan tâm" disabled>Nhu cầu quan tâm</option>
+              <option value="Bảo hiểm Ô tô">Bảo hiểm Ô tô</option>
+              <option value="Bảo hiểm Sức khỏe">Bảo hiểm Sức khỏe</option>
+              <option value="Bảo hiểm Xe máy">Bảo hiểm Xe máy</option>
             </select>
-            <Button type="button" className="col-span-2 bg-brand-accent text-white rounded-lg font-bold hover:bg-brand-accent-hover shadow-md shadow-brand-accent/20 py-6 text-base mt-2">
-              Gửi yêu cầu
+            <Button type="submit" disabled={isSubmitting} className="col-span-2 bg-brand-accent text-white rounded-lg font-bold hover:bg-brand-accent-hover shadow-md shadow-brand-accent/20 py-6 text-base mt-2">
+              {isSubmitting ? 'Đang gửi...' : 'Gửi yêu cầu'}
             </Button>
           </form>
           <div className="mt-6 flex gap-4 pt-4 border-t border-slate-100">
